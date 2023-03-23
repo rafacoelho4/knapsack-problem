@@ -3,8 +3,8 @@
 
 # BCC 405 - Otimizacao Nao Linear 
 
-from construcao import construcao_aleatoria, construcao_inicial
-from descida import descida_aleatoria
+from construcao import construcao_aleatoria, construcao_inicial, guloso
+from descida import descida_aleatoria, primeira_melhora
 from fo import calcula_fo
 
 # (profit, weight)
@@ -22,11 +22,13 @@ def main():
         (1074,815), (839,446), (819,422), (1062,791), (762,359), (994,667),
         (950,598), (111,7), (914,544), (737,334), (1049,766), (1152,994), (1110,893)]
     z = 2291
-    # s = construcao_aleatoria(n=n, capacity=c, objects=o) 
-    s = construcao_inicial(n=n, capacity=c, objects=o) 
+    # s = guloso(n=n, capacity=c, objects=o)
+    s = construcao_aleatoria(n=n, capacity=c, objects=o) 
+    # s = construcao_inicial(n=n, capacity=c, objects=o) 
     print("solucao inicial:", s)
     print("fo inicial:", calcula_fo(s, objects=o))
-    s = descida_aleatoria(s, objects=o, capacity=c, max_it=100) 
+    # s = descida_aleatoria(s, objects=o, capacity=c, max_it=2000) 
+    s = primeira_melhora(s, objects=o, capacity=c) 
     print("solucao final:", s)
     fo = calcula_fo(s, objects=o)
     print("fo final:", fo)

@@ -55,15 +55,37 @@ def descida_aleatoria(s, objects, capacity, max_it):
 
 def primeira_melhora(s, objects, capacity):
     fo = calcula_fo(s, objects)
-    while True:
-        s_viz = vizinho_aleatorio(s, objects, capacity) 
+    # random order of neighbors
+    arr = np.arange(len(s))
+    np.random.shuffle(arr)
+    print(arr)
+    k = 0
+    while (k < len(s)):
+        s_viz = reverse_bit(s, objects, capacity, arr[k])
         fo_viz = calcula_fo(s_viz, objects)
         if (fo_viz > fo): 
             print("houve melhora de _ para _ :", fo, fo_viz)
+            print(s_viz)
             s = s_viz
             break
-        else:
-            # dúvida sobre o que é 
-            # k ← |(s, N)|
-            None
+        else: 
+            k += 1
     return s
+
+def reverse_bit(s, objects, capacity, b):
+    # calculating weight of current solution 
+    weight = 0
+    for i in range(len(s)):
+        weight += s[i] * objects[i][1]
+    # copy of solution 
+    s_viz = np.copy(s) 
+    # taking item out 
+    if(s_viz[b] == 1): 
+        s_viz[b] = 0
+    else: 
+        # trying to include new object 
+        if(weight + objects[b][1] > capacity):
+            return s_viz
+        else: 
+            s_viz[b] = 1
+    return s_viz

@@ -15,7 +15,6 @@ def construcao_aleatoria(n, capacity, objects):
     weight = 0
     while (weight < capacity):
         # choose random object 
-        # rand = random.choice(objects) 
         random_index = random.randint(0, len(objects) - 1)
         # if object is already part of the solution 
         if (s[random_index] == 1): 
@@ -40,5 +39,26 @@ def construcao_inicial(n, capacity, objects):
             break
     return s
 
-def guloso():
-    return
+def guloso(n, capacity, objects):
+    s = np.zeros(n)
+    # cost benefit 
+    cb = np.zeros(n) 
+    for i in range(len(cb)):
+        cb[i] = objects[i][0] / objects[i][1]
+    # print("cost benefit:", cb)
+    # current weight of bag 
+    weight = 0
+    k = 0
+    while (k < n): 
+        k += 1
+        # select highest cost benefit 
+        high = cb.argmax(axis=0) 
+        # if best object has weight that will surpass capacity, discard 
+        if (weight + objects[high][1] > capacity):
+            cb[high] = 0
+        # if object can be added to the bag, do it 
+        else:
+            s[high] = 1 
+            weight += objects[high][1] 
+            cb[high] = 0 
+    return s
